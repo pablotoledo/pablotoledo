@@ -1,0 +1,83 @@
+name: Metrics
+
+on:
+  # Programación para actualizaciones
+  schedule: 
+    - cron: "0 5 * * *"
+  # Las siguientes líneas permiten ejecutar el flujo de trabajo manualmente y en cada commit
+  workflow_dispatch:
+  push: 
+    branches: ["main"]
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: lowlighter/metrics@master
+        with:
+          # Tu token de GitHub
+          token: ${{ secrets.METRICS_TOKEN }}
+
+          # Opciones
+          user: pablotoledo
+          template: classic
+          config_gemoji: yes # Utilizar emojis adicionales que no son unicode
+          config_timezone: Europe/Madrid # Zona horaria ajustada a Madrid
+          retries: 3 # Cantidad de intentos en caso de fallo
+          retries_delay: 300 # Retraso entre reintentos en segundos
+          use_prebuilt_image: yes # Usa una imagen preconstruida para una ejecución más rápida
+
+          # Base
+          base: header, activity, community, repositories, metadata
+          repositories_forks: no
+          repositories_affiliations: owner
+          repositories_skipped: pablotoledo/pablotoledo
+
+          # Plugin de calendario isométrico
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: full-year
+
+          # Plugin de lenguajes de programación
+          plugin_languages: yes
+          plugin_languages_ignored: c, c++, c#, Java
+          plugin_languages_details: bytes-size, percentage
+          plugin_languages_sections: most-used, recently-used
+
+          # Plugin de hábitos de codificación
+          plugin_habits: yes
+          plugin_habits_from: 200
+          plugin_habits_days: 90
+          plugin_habits_facts: yes
+          plugin_habits_charts: yes
+
+          # Plugin de repositorios destacados
+          plugin_stars: yes
+          plugin_stars_limit: 4
+
+          # Repositorios anclados
+          plugin_repositories: yes
+          plugin_repositories_pinned: 4
+
+          # Plugin de reacciones
+          plugin_reactions: yes
+          plugin_reactions_limit: 200
+          plugin_reactions_days: 90
+          plugin_reactions_details: count
+
+          # Plugin de seguimiento (cuestiones abiertas/cerradas, PR abiertos/fusionados)
+          plugin_followup: yes
+          plugin_followup_sections: repositories, user
+
+          # Plugin de líneas de código
+          plugin_lines: yes
+
+          # Plugin de tráfico en repositorios
+          plugin_traffic: yes
+
+          # Plugin de seguidores de estrellas
+          plugin_stargazers: yes
+
+          # Plugin destacable
+          plugin_notable: yes
+          plugin_notable_filter: stars:>50
+          plugin_notable_repositories: no

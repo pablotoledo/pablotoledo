@@ -1,3 +1,4 @@
+#https://github.com/lowlighter/metrics/blob/master/.github/readme/partials/documentation/setup/action.md
 name: Metrics
 
 on:
@@ -12,11 +13,13 @@ on:
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: lowlighter/metrics@master
         with:
           # Tu token de GitHub
           token: ${{ secrets.METRICS_TOKEN }}
+          committer_token: ${{ secrets.METRICS_TOKEN }}
 
           # Opciones
           user: pablotoledo

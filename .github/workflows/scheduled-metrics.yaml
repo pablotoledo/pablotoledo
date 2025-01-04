@@ -34,6 +34,8 @@ jobs:
           base: header, activity, community, repositories, metadata
           repositories_forks: no
           repositories_affiliations: owner
+          base_repositories_skip: pablotoledo/pablotoledo
+          config_presets: no-skipped-repositorie
           repositories_skipped: pablotoledo/pablotoledo
 
           # Plugin de calendario isométrico

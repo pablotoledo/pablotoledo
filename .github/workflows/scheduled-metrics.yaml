@@ -13,9 +13,11 @@ on:
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
+    permissions:
+      contents: write
     steps:
-      - uses: lowlighter/metrics@master
+      - uses: lowlighter/metrics@latest
         with:
           # Tu token de GitHub
           token: ${{ secrets.METRICS_TOKEN }}
@@ -28,6 +30,9 @@ jobs:
           config_timezone: Europe/Madrid # Zona horaria ajustada a Madrid
           retries: 3 # Cantidad de intentos en caso de fallo
           retries_delay: 300 # Retraso entre reintentos en segundos
+          retries_output_action: 5 # Reintentos para la acción de salida
+          retries_delay_output_action: 120 # Retraso entre reintentos de salida
+          plugins_errors_fatal: no # No fallar si un plugin tiene errores
           use_prebuilt_image: yes # Usa una imagen preconstruida para una ejecución más rápida
 
           # Base
@@ -45,6 +50,7 @@ jobs:
           plugin_languages_ignored: c, c++, c#, Java
           plugin_languages_details: bytes-size, percentage
           plugin_languages_sections: most-used, recently-used
+          plugin_languages_indepth: no # Desactivado para evitar errores con eventos sin committer
 
           # Plugin de hábitos de codificación
           plugin_habits: yes
